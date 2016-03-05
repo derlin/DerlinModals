@@ -26,6 +26,7 @@
         var self = this;
 
         self.bootstrap = true;
+        self.cancelable = true;
 
         self.dialogs = [
             {
@@ -42,6 +43,9 @@
             }, {
                 title: 'custom template',
                 func : dialogCustomTemplate
+            }, {
+                title: 'no framework template',
+                func : dialogNoFrameworkTemplate
             }];
 
         self.dial = function( dialog ){
@@ -58,7 +62,7 @@
                 bootstrap : self.bootstrap,
                 title     : "Confirm",
                 text      : "Are you sure ?",
-                cancelable: true,
+                cancelable: false,
                 positive  : "yes",
                 negative  : "never mind"
             } ).then( function( result ){
@@ -109,6 +113,19 @@
                         console.log( "stop" );
                     }
                 }
+            } ).then( modalClosed, modalError );
+
+        }
+
+        function dialogNoFrameworkTemplate(){
+
+            ModalService.showModal( {
+                bootstrap  : false,
+                templateUrl: "myCustomModal.html",
+                inputs     : {
+                    more: "akldjWEXCF.44"
+                },
+                cancelable : true
             } ).then( modalClosed, modalError );
 
         }

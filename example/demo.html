@@ -98,6 +98,17 @@
     </div>
 </script>
 
+
+<!-- custom no framework template -->
+<script type="text/ng-template" id="myCustomModal.html">
+    <div id="pureHtmlCssDialog">
+        <div>
+            <div ng-click="close(false)"><span class="my-close">X</span></div>
+            <h4>No frameworks!</h4>
+            <div>content of "more" : {{ inputs.more }}</div>
+        </div>
+    </div>
+</script>
 <!-- ================================================ -->
 
 <script type="text/javascript" src="https://code.angularjs.org/1.5.0/angular.min.js"></script>
