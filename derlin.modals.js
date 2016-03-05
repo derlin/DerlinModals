@@ -116,6 +116,8 @@
                             e.stopPropagation();
                         });
                     }
+
+
                     //  Finally, append the modal to the dom.
                     if( options.appendElement ){
                         // append to custom append element
@@ -133,6 +135,7 @@
                         element   : modalElement
                     };
 
+                    if(componentHandler) componentHandler.upgradeDom();
 
                 }, function(){
                     // if the template failed
@@ -152,7 +155,7 @@
             if( !templateUrl ){
                 template = template || "";
                 var html = '<div id="derlinDialog" class="dialog-container"><div class="mdl-card' +
-                    ' mdl-shadow--16dp content"><h5 ng-show="title">{{title}}</h5><p ng-show="text">{{text}}</p>' + template + '<div' +
+                    ' mdl-shadow--16dp content"><h5 ng-show="title">{{title}}</h5><p class="dialog-text" ng-show="text">{{text}}</p>' + template + '<div' +
                     ' class="mdl-card__actions' +
                     ' dialog-button-bar"><button ng-show="negative" ng-click="close(false)" ' +
                     'class="mdl-button mdl-js-button mdl-js-ripple-effect" id="negative">{{negative || "No"}}</button>' +

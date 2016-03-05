@@ -17,10 +17,18 @@
 
 <!-- ================================================ -->
 
-<button ng-click="ctrl.dialog1()">dialog1</button>
-<button ng-click="ctrl.dialog2()">dialog2</button>
-<button ng-click="ctrl.dialog3()">dialog3</button>
+<div>
+    <button ng-repeat="d in ctrl.dialogs" ng-click="ctrl.dial(d)"
+            class="demo-btn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+        {{d.title}}
+    </button>
+</div>
 
+<hr>
+
+<div id="results">
+    last results: {{ctrl.lastResults | json}}
+</div>
 
 
 <!--custom template -->
