@@ -15,7 +15,12 @@ a {
     opacity: 1 !important;
 }
 
-#runDialog button {
+.align-center {
+    text-align: center;
+}
+
+.run-btn {
+    display: block;
     width: 60%;
     margin: 10px auto;
 }

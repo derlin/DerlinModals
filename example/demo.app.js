@@ -22,8 +22,10 @@
 
     // --------------------------
 
-    function MainCtrl( ModalService, $scope ){
+    function MainCtrl( ModalService ){
         var self = this;
+
+        self.bootstrap = true;
 
         self.dialogs = [
             {
@@ -32,10 +34,10 @@
             },
             {
                 title: "MDL input",
-                func : dialogInputMdl
+                func : dialogInput
             }, {
                 title: 'custom MDL template',
-                func : dialogCustomMdlTemplate
+                func : dialogCustomTemplate
             }];
 
         self.dial = function( dialog ){
@@ -47,11 +49,23 @@
         };
         // ----------------------------------------------------
 
-        function dialogInputMdl(){
+        function dialogInfoCancellable(){
+
+            ModalService.showModal( {
+                bootstrap: self.bootstrap,
+                title     : "What is lorem ipsum?",
+                text      : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                cancelable: true
+            } ).then( modalClosed, modalError );
+
+        }
+
+        function dialogInput(){
             var inputs = {city: 'New York'};
             ModalService.showModal( {
+                bootstrap: self.bootstrap,
                 title     : "Fry City",
-                template  : '<div ng-class="{\'is-dirty\': inputs.city}" class="mdl-textfield mdl-js-textfield' +
+                html  : '<div ng-class="{\'is-dirty\': inputs.city}" class="mdl-textfield mdl-js-textfield' +
                 ' mdl-textfield--floating-label">' +
                 '<input class="mdl-textfield__input" type="text" id="sample" ng-model="inputs.city">' +
                 '<label class="mdl-textfield__label" for="sample">Fry lives in</label>' +
@@ -64,20 +78,12 @@
 
         }
 
-        function dialogInfoCancellable(){
+
+        function dialogCustomTemplate(){
 
             ModalService.showModal( {
-                title     : "What is lorem ipsum?",
-                text      : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                cancelable: true
-            } ).then( modalClosed, modalError );
-
-        }
-
-        function dialogCustomMdlTemplate(){
-
-            ModalService.showModal( {
-                templateUrl: "runDialogTemplate.html",
+                bootstrap: self.bootstrap,
+                templateUrl: (self.bootstrap ? "bootstrap" : "mdl" ) + "DialogTemplate.html",
                 inputs     : {
                     run : function(){
                         console.log( "run" );

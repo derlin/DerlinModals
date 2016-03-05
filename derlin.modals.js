@@ -50,7 +50,7 @@
             var closeDeferred = $q.defer();
 
             //  Get the actual html of the template.
-            getTemplate( options.template, options.templateUrl )
+            getTemplate( options )
                 .then( function( template ){
                     //  Create a new scope for the modal.
                     var modalScope = $rootScope.$new();
@@ -66,10 +66,10 @@
                     }
 
                     // create close function
-                    modalScope.close = function( result, delay ){
-                        if( delay === undefined || delay === null ) delay = 0;
+                    modalScope.close = function( result ){
+                        delay = options.bootstrap ? 500 : 0;
                         window.setTimeout( function(){
-                            $(document).unbind("keyup.dialog");
+                            $( document ).unbind( "keyup.dialog" );
 
                             //  Resolve the 'close' promise.
                             closeDeferred.resolve( {status: result, inputs: modalScope.inputs} );
@@ -102,19 +102,19 @@
                     //  Create the controller, explicitly specifying the scope to use.
                     var modalController = $controller( 'DerlinController as ctrl', {$scope: modalScope} );
 
-                    if(options.cancelable){
-                        modalElement.click(function () {
+                    if( !options.bootstrap && options.cancelable ){
+                        modalElement.click( function(){
                             modalScope.close();
-                        });
+                        } );
 
-                        $(document).bind("keyup.dialog", function (e) {
-                            if (e.which == 27)
+                        $( document ).bind( "keyup.dialog", function( e ){
+                            if( e.which == 27 )
                                 modalScope.close();
-                        });
+                        } );
 
-                        modalElement.find('.content').click(function (e) {
+                        modalElement.find( '.content' ).click( function( e ){
                             e.stopPropagation();
-                        });
+                        } );
                     }
 
 
@@ -135,7 +135,13 @@
                         element   : modalElement
                     };
 
-                    if(componentHandler) componentHandler.upgradeDom();
+                    if( options.bootstrap ){
+                        var opt = !options.cancelable ? {backdrop:"static"} : {};
+                        modalElement.modal(opt);
+
+                    }else{
+                        componentHandler.upgradeDom();
+                    }
 
                 }, function(){
                     // if the template failed
@@ -150,32 +156,44 @@
         // ----------------------------------------------------
 
 
-        function getTemplate( template, templateUrl ){
+        function getTemplate( options ){
             var deferred = $q.defer();
-            if( !templateUrl ){
-                template = template || "";
-                var html = '<div id="derlinDialog" class="dialog-container"><div class="mdl-card' +
-                    ' mdl-shadow--16dp content"><h5 ng-show="title">{{title}}</h5><p class="dialog-text" ng-show="text">{{text}}</p>' + template + '<div' +
-                    ' class="mdl-card__actions' +
-                    ' dialog-button-bar"><button ng-show="negative" ng-click="close(false)" ' +
-                    'class="mdl-button mdl-js-button mdl-js-ripple-effect" id="negative">{{negative || "No"}}</button>' +
-                    '<button ng-show="positive" ng-click="close(true)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"' +
-                    ' id="positive">{{positive || "Yes"}}</button></div></div></div>';
+            if( !options.templateUrl ){
 
+                var content = options.html || "";
+
+                var html;
+                if( options.bootstrap ){
+                    html = '<div class="modal fade"><div class="modal-dialog"><div class="modal-content">' +
+                        '<div class="modal-header"><button type="button" class="close" ng-click="close(true)" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                        '<h4 class="modal-title">{{title}}</h4></div><div class="modal-body"><p ng-show="text">{{' +
+                        ' text }}</p>' + content + ' </div>' +
+                        '<div class="modal-footer"><button ng-show="negative" type="button" ng-click="close(false)" class="btn btn-default" ' +
+                        'data-dismiss="modal">{{negative}}</button><button ng-show="positive" type="button" ng-click="close(true)" ' +
+                        'class="btn btn-primary" data-dismiss="modal">{{positive}}</button></div></div></div></div>';
+                }else{
+                    html = '<div id="derlinDialog" class="dialog-container"><div class="mdl-card' +
+                        ' mdl-shadow--16dp content"><h5 ng-show="title">{{title}}</h5><p class="dialog-text" ng-show="text">{{text}}</p>' + content + '<div' +
+                        ' class="mdl-card__actions' +
+                        ' dialog-button-bar"><button ng-show="negative" ng-click="close(false)" ' +
+                        'class="mdl-button mdl-js-button mdl-js-ripple-effect" id="negative">{{negative}}</button>' +
+                        '<button ng-show="positive" ng-click="close(true)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"' +
+                        ' id="positive">{{positive}}</button></div></div></div>';
+                }
                 deferred.resolve( html );
 
             }else{
                 // check to see if the template has already been loaded
-                var cachedTemplate = $templateCache.get( templateUrl );
+                var cachedTemplate = $templateCache.get( options.templateUrl );
                 if( cachedTemplate !== undefined ){
                     deferred.resolve( cachedTemplate );
                 }
                 // if not, let's grab the template for the first time
                 else{
-                    $http( {method: 'GET', url: templateUrl, cache: true} )
+                    $http( {method: 'GET', url: options.templateUrl, cache: true} )
                         .then( function( result ){
                             // save template into the cache and return the template
-                            $templateCache.put( templateUrl, result.data );
+                            $templateCache.put( options.templateUrl, result.data );
                             deferred.resolve( result.data );
                         }, function( error ){
                             deferred.reject( error );
