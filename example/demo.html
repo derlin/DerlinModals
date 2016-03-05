@@ -42,7 +42,7 @@
 
 <!--custom MDL template -->
 <script type="text/ng-template" id="mdlDialogTemplate.html">
-    <div class="dialog-container" style="opacity: 1;">
+    <div class="derlinModal mdl">
         <div class="mdl-card mdl-shadow--16dp">
             <div id="runDialogContent" class="dialog-custom-content" style="display: block;">
                 <h4>Your robot is ready</h4>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mdl-card__actions dialog-button-bar">
+            <div class="mdl-card__actions button-bar">
                 <button ng-click="close(false)"
                         class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">close
                 </button>
@@ -79,7 +79,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" ng-click="close(true)" data-dismiss="modal"
+                    <button type="button" class="close" ng-click="close(false)" data-dismiss="modal"
                             aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Your robot is ready.</h4>
                 </div>

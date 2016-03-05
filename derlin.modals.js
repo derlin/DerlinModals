@@ -112,7 +112,7 @@
                                 modalScope.close();
                         } );
 
-                        modalElement.find( '.content' ).click( function( e ){
+                        modalElement.find( 'div' ).first().click( function( e ){
                             e.stopPropagation();
                         } );
                     }
@@ -136,8 +136,8 @@
                     };
 
                     if( options.bootstrap ){
-                        var opt = !options.cancelable ? {backdrop:"static"} : {};
-                        modalElement.modal(opt);
+                        var opt = options.cancelable ? {keyboard: true} : {keyboard: false, backdrop: "static"};
+                        modalElement.modal( opt );
 
                     }else{
                         componentHandler.upgradeDom();
@@ -164,18 +164,17 @@
 
                 var html;
                 if( options.bootstrap ){
-                    html = '<div class="modal fade"><div class="modal-dialog"><div class="modal-content">' +
-                        '<div class="modal-header"><button type="button" class="close" ng-click="close(true)" data-dismiss="modal" aria-hidden="true">&times;</button>' +
-                        '<h4 class="modal-title">{{title}}</h4></div><div class="modal-body"><p ng-show="text">{{' +
+                    html = '<div class="derlinModal modal fade" tabindex="-1"><div class="modal-dialog"><div class="modal-content">' +
+                        '<div class="modal-header"><button type="button" class="close" ng-click="close(false)" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                        '<h4 class="modal-title">{{title}}</h4></div><div class="derlinContent modal-body"><p ng-show="text">{{' +
                         ' text }}</p>' + content + ' </div>' +
                         '<div class="modal-footer"><button ng-show="negative" type="button" ng-click="close(false)" class="btn btn-default" ' +
                         'data-dismiss="modal">{{negative}}</button><button ng-show="positive" type="button" ng-click="close(true)" ' +
                         'class="btn btn-primary" data-dismiss="modal">{{positive}}</button></div></div></div></div>';
                 }else{
-                    html = '<div id="derlinDialog" class="dialog-container"><div class="mdl-card' +
-                        ' mdl-shadow--16dp content"><h5 ng-show="title">{{title}}</h5><p class="dialog-text" ng-show="text">{{text}}</p>' + content + '<div' +
-                        ' class="mdl-card__actions' +
-                        ' dialog-button-bar"><button ng-show="negative" ng-click="close(false)" ' +
+                    html = '<div class="derlinModal mdl"><div class="mdl-card' +
+                        ' mdl-shadow--16dp content"><h3 ng-show="title">{{title}}</h3><p class="derlinContent" ng-show="text">{{text}}</p>' + content + '<div' +
+                        ' class="mdl-card__actions button-bar"><button ng-show="negative" ng-click="close(false)" ' +
                         'class="mdl-button mdl-js-button mdl-js-ripple-effect" id="negative">{{negative}}</button>' +
                         '<button ng-show="positive" ng-click="close(true)" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"' +
                         ' id="positive">{{positive}}</button></div></div></div>';

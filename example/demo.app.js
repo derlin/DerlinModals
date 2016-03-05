@@ -25,7 +25,7 @@
     function MainCtrl( ModalService ){
         var self = this;
 
-        self.bootstrap = true;
+        self.bootstrap = false;
         self.cancelable = true;
 
         self.dialogs = [
