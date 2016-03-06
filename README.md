@@ -56,9 +56,7 @@ here is the html (without the header):
 </body>
 ```
 
-Result:
-
-TODO image
+Check the result with this jsfiddle : https://jsfiddle.net/Shitsu/vsh2vs4x/.
 
 ## Functionalities
 
