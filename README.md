@@ -4,6 +4,7 @@ This modal service is light, easy-to-use and highly customizable. It works with 
 
 ## Quick start
 
+0. Use your favorite framework: bootstrap or MDL (for other frameworks, see the `templateUrl` option).
 1. Download the file `derlin.modals.js` and include it in your html. If you use MDL, don't forget to also include `derlin.modals.css`.
 2. register `derlin.modals` as a dependancy to your angular module.
 3. inject `ModalService` in your controller.
@@ -296,3 +297,14 @@ The css:
     background: #00d9ff;
 }
 ```
+
+## TODO
+
+ - also support pure CSS 3 modals (no framework) with regular options,
+
+## Inspirations and other projects
+
+This module would not have been possible with the previous work of :
+
+ - [angular-modal-service](https://github.com/dwmkerr/angular-modal-service): a great angularJS module,
+ - [mdl-jquery-modal-dialog](https://github.com/oRRs/mdl-jquery-modal-dialog): dialog support for mdl.
